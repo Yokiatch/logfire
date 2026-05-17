@@ -1,0 +1,44 @@
+[
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -fPIC -O3 -march=native -Wall -Wextra -Wpedantic -o CMakeFiles/logfire_core.dir/cpp/core/mmap_reader.cpp.o -c /home/manit/logfire/cpp/core/mmap_reader.cpp",
+  "file": "/home/manit/logfire/cpp/core/mmap_reader.cpp",
+  "output": "CMakeFiles/logfire_core.dir/cpp/core/mmap_reader.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -fPIC -O3 -march=native -Wall -Wextra -Wpedantic -o CMakeFiles/logfire_core.dir/cpp/core/line_scanner.cpp.o -c /home/manit/logfire/cpp/core/line_scanner.cpp",
+  "file": "/home/manit/logfire/cpp/core/line_scanner.cpp",
+  "output": "CMakeFiles/logfire_core.dir/cpp/core/line_scanner.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -fPIC -O3 -march=native -Wall -Wextra -Wpedantic -o CMakeFiles/logfire_core.dir/cpp/core/query_filter.cpp.o -c /home/manit/logfire/cpp/core/query_filter.cpp",
+  "file": "/home/manit/logfire/cpp/core/query_filter.cpp",
+  "output": "CMakeFiles/logfire_core.dir/cpp/core/query_filter.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -fPIC -O3 -march=native -Wall -Wextra -Wpedantic -o CMakeFiles/logfire_core.dir/cpp/core/serializer.cpp.o -c /home/manit/logfire/cpp/core/serializer.cpp",
+  "file": "/home/manit/logfire/cpp/core/serializer.cpp",
+  "output": "CMakeFiles/logfire_core.dir/cpp/core/serializer.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -O3 -march=native -Wall -Wextra -Wpedantic -o CMakeFiles/logfire_cli.dir/cpp/cli/main.cpp.o -c /home/manit/logfire/cpp/cli/main.cpp",
+  "file": "/home/manit/logfire/cpp/cli/main.cpp",
+  "output": "CMakeFiles/logfire_cli.dir/cpp/cli/main.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++  -I/home/manit/logfire/cpp/core -O3 -DNDEBUG -std=gnu++20 -O3 -march=native -Wall -Wextra -Wpedantic -DGTEST_HAS_PTHREAD=1 -o CMakeFiles/logfire_tests.dir/tests/cpp/test_core.cpp.o -c /home/manit/logfire/tests/cpp/test_core.cpp",
+  "file": "/home/manit/logfire/tests/cpp/test_core.cpp",
+  "output": "CMakeFiles/logfire_tests.dir/tests/cpp/test_core.cpp.o"
+},
+{
+  "directory": "/home/manit/logfire/build",
+  "command": "/usr/bin/c++ -D_logfire_EXPORTS -I/home/manit/logfire/cpp/core -isystem /home/manit/logfire/build/_deps/pybind11-src/include -isystem /usr/include/python3.14 -O3 -DNDEBUG -std=gnu++20 -fPIC -fvisibility=hidden -O3 -march=native -Wall -Wextra -Wpedantic -flto -fno-fat-lto-objects -o CMakeFiles/_logfire.dir/cpp/bindings/py_bindings.cpp.o -c /home/manit/logfire/cpp/bindings/py_bindings.cpp",
+  "file": "/home/manit/logfire/cpp/bindings/py_bindings.cpp",
+  "output": "CMakeFiles/_logfire.dir/cpp/bindings/py_bindings.cpp.o"
+}
+]

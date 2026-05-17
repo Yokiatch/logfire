@@ -1,0 +1,83 @@
+{
+  "tests": 13,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "CoreTest",
+      "tests": 11,
+      "testsuite": [
+        {
+          "name": "MmapOpensAndReadsFile",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 28
+        },
+        {
+          "name": "MmapThrowsOnMissingFile",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 35
+        },
+        {
+          "name": "ScannerReturnsCorrectLineCount",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 40
+        },
+        {
+          "name": "ScannerHandlesEmptyBuffer",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 47
+        },
+        {
+          "name": "ScannerPreservesContent",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 52
+        },
+        {
+          "name": "NoFilterMatchesAll",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 61
+        },
+        {
+          "name": "RegexFilterMatchesErrors",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 70
+        },
+        {
+          "name": "FieldFilterMatchesINFO",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 81
+        },
+        {
+          "name": "LimitClampResults",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 90
+        },
+        {
+          "name": "OffsetSkipsLines",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 99
+        },
+        {
+          "name": "BadRegexThrows",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 108
+        }
+      ]
+    },
+    {
+      "name": "SerializerTest",
+      "tests": 2,
+      "testsuite": [
+        {
+          "name": "EmptyProducesEmptyArray",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 114
+        },
+        {
+          "name": "EscapesQuotes",
+          "file": "\/home\/manit\/logfire\/tests\/cpp\/test_core.cpp",
+          "line": 118
+        }
+      ]
+    }
+  ]
+}
