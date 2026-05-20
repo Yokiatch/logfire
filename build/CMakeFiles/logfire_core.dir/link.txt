@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblogfire_core.a CMakeFiles/logfire_core.dir/cpp/core/mmap_reader.cpp.o CMakeFiles/logfire_core.dir/cpp/core/line_scanner.cpp.o CMakeFiles/logfire_core.dir/cpp/core/query_filter.cpp.o CMakeFiles/logfire_core.dir/cpp/core/serializer.cpp.o
-/usr/bin/ranlib liblogfire_core.a

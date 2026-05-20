@@ -1,5 +1,0 @@
-if(EXISTS "/home/manit/logfire/build/logfire_tests[1]_tests.cmake")
-  include("/home/manit/logfire/build/logfire_tests[1]_tests.cmake")
-else()
-  add_test(logfire_tests_NOT_BUILT logfire_tests_NOT_BUILT)
-endif()
