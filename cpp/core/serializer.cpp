@@ -5,24 +5,28 @@
 
 namespace logfire {
 
-static std::string escape_json(std::string_view s) {
-    std::string out;
-    out.reserve(s.size() + 8);
+static void append_escaped(std::string& out, std::string_view s) {
     for (char c : s) {
-        if      (c == '"')  out += "\\\"";
-        else if (c == '\\') out += "\\\\";
-        else if (c == '\r') out += "\\r";
-        else                out += c;
+        if      (c == '"')  { out += '\\'; out += '"';  }
+        else if (c == '\\') { out += '\\'; out += '\\'; }
+        else if (c == '\r') { out += '\\'; out += 'r';  }
+        else                  out += c;
     }
-    return out;
 }
 
 std::string to_json(const std::vector<std::string_view>& lines) {
-    std::string j = "[";
+    if (lines.empty()) return "[]";
+
+    std::size_t reserve = 2;
+    for (auto& l : lines) reserve += l.size() + 3;
+
+    std::string j;
+    j.reserve(reserve);
+    j = "[";
     for (std::size_t i = 0; i < lines.size(); ++i) {
         if (i) j += ',';
         j += '"';
-        j += escape_json(lines[i]);
+        append_escaped(j, lines[i]);
         j += '"';
     }
     j += ']';

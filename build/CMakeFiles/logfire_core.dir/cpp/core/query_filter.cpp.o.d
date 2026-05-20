@@ -249,4 +249,7 @@ CMakeFiles/logfire_core.dir/cpp/core/query_filter.cpp.o: \
  /usr/include/absl/base/internal/scheduling_mode.h \
  /usr/include/absl/base/internal/spinlock_wait.h \
  /usr/include/absl/base/nullability.h \
- /usr/include/absl/strings/string_view.h /usr/include/re2/stringpiece.h
+ /usr/include/absl/strings/string_view.h /usr/include/re2/stringpiece.h \
+ /usr/include/c++/15/cstring /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h

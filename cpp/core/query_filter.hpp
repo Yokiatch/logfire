@@ -20,12 +20,20 @@ public:
     explicit QueryFilter(const QueryOptions& opts);
     ~QueryFilter();
 
+    // Two-pass: pre-scanned lines → filter
     std::vector<std::string_view>
     apply(const std::vector<std::string_view>& lines) const;
 
+    // Single-pass: scan + filter simultaneously from raw buffer
+    std::vector<std::string_view>
+    apply_single_pass(std::string_view buf) const;
+
 private:
+    bool matches(std::string_view line) const;
+
     QueryOptions              opts_;
     std::unique_ptr<re2::RE2> re_;
+    bool                      is_literal_ = false;
 };
 
 } // namespace logfire

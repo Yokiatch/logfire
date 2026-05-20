@@ -7,6 +7,12 @@
 #include <chrono>
 #include <cstdlib>
 
+using clk = std::chrono::high_resolution_clock;
+
+static double ms(clk::time_point a, clk::time_point b) {
+    return std::chrono::duration<double, std::milli>(b - a).count();
+}
+
 static void usage(const char* prog) {
     std::cerr << "Usage: " << prog
               << " <file> [--pattern <regex>] [--field <str>]"
@@ -35,28 +41,43 @@ int main(int argc, char* argv[]) {
     if (path.empty()) usage(argv[0]);
 
     try {
-        auto t0 = std::chrono::high_resolution_clock::now();
+        // ── mmap ─────────────────────────────────────────────────
+        auto t0   = clk::now();
+        auto file = logfire::MmapFile::open(path);
+        auto t1   = clk::now();
 
-        auto file    = logfire::MmapFile::open(path);
-        auto lines   = logfire::scan_lines(file.view());
+        // ── single-pass: scan + filter fused ─────────────────────
         logfire::QueryFilter filter{opts};
-        auto matched = filter.apply(lines);
+        auto matched = filter.apply_single_pass(file.view());
+        auto t2      = clk::now();
 
-        auto t1 = std::chrono::high_resolution_clock::now();
-        double ms = std::chrono::duration<double, std::milli>(t1 - t0).count();
+        // ── serialize ─────────────────────────────────────────────
+        auto result = logfire::to_json(matched);
+        auto t3     = clk::now();
+
+        double t_mmap   = ms(t0, t1);
+        double t_filter = ms(t1, t2);
+        double t_serial = ms(t2, t3);
+        double t_total  = ms(t0, t3);
+        double file_mb  = file.size / 1e6;
 
         if (bench_mode) {
-            std::cout << "total="         << lines.size()
-                      << " matched="      << matched.size()
-                      << " time_ms="      << ms
-                      << " throughput_MB/s="
-                      << (file.size / 1e6) / (ms / 1e3)
+            std::cout << "total="    << matched.size()
+                      << " time_ms=" << t_total
+                      << " throughput_MB/s=" << (file_mb / (t_total / 1e3))
                       << "\n";
+            std::cerr << "\n── stage breakdown (single-pass) ────\n"
+                      << "  mmap         : " << t_mmap   << " ms\n"
+                      << "  scan+filter  : " << t_filter << " ms\n"
+                      << "  serialize    : " << t_serial << " ms\n"
+                      << "  total        : " << t_total  << " ms\n"
+                      << "  file         : " << file_mb  << " MB\n"
+                      << "─────────────────────────────────────\n";
         } else {
             for (auto& l : matched)
                 std::cout << l << "\n";
-            std::cerr << "── " << matched.size() << "/" << lines.size()
-                      << " lines matched in " << ms << " ms\n";
+            std::cerr << "── " << matched.size()
+                      << " lines matched in " << t_total << " ms\n";
         }
 
         file.close();
