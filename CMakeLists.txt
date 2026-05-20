@@ -9,7 +9,9 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-add_compile_options(-O3 -march=native -Wall -Wextra -Wpedantic)
+add_compile_options(-O3 -g -march=native -Wall -Wextra -Wpedantic)
+
+add_link_options(-flto)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(RE2 REQUIRED re2)
