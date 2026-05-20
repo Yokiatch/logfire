@@ -1,0 +1,8 @@
+/build/
+*.o
+*.a
+*.so
+perf.data*
+bench_*.txt
+benchmark_dashboard.png
+__pycache__/
