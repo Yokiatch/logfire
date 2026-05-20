@@ -1,5 +1,6 @@
 #include "serializer.hpp"
 #include <string>
+#include<cstring>
 #include <string_view>
 #include <vector>
 
@@ -15,8 +16,9 @@ static void append_escaped(std::string& out, std::string_view s) {
 }
 
 static inline bool needs_escape(std::string_view s) {
-    return s.find_first_of("\"\\\r")
-           != std::string_view::npos;
+    return memchr(s.data(), '"', s.size()) ||
+           memchr(s.data(), '\\', s.size()) ||
+           memchr(s.data(), '\r', s.size());
 }
 
 std::string to_json(const std::vector<std::string_view>& lines) {

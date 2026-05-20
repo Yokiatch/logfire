@@ -50,6 +50,9 @@ int main(int argc, char* argv[]) {
         logfire::QueryFilter filter{opts};
         auto matched = filter.apply_single_pass(file.view());
         auto t2      = clk::now();
+        std::cerr << "matched lines = "
+          << matched.size()
+          << "\n";
 
         // ── serialize ─────────────────────────────────────────────
         auto result = logfire::to_json(matched);
