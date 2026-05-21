@@ -1,90 +1,130 @@
-# logfire
+# Logfire --- High-Performance Log Analytics Engine
 
-High-performance log analytics engine with a C++ core and Python API.
-Scans and filters millions of log lines in milliseconds using memory-mapped I/O, SIMD line scanning, and RE2 regex.
+Logfire is a C++ log analytics/query engine designed for fast searching
+over large log files using memory-mapped I/O, single-pass filtering, and
+profiling-driven optimization.
 
-## Benchmark
+## Highlights
 
-| File size | Lines | Pattern | Time | Throughput |
-|---|---|---|---|---|
-| ~5 MB | 100,000 | `ERROR` | ~13ms | **268 MB/s** |
+-   Memory-mapped file access (`mmap`)
+-   Literal + regex search (RE2)
+-   Single-pass scan + filter pipeline
+-   Python bindings via pybind11
+-   CLI benchmarking support
+-   Profiling with `perf`
+-   Benchmark dashboards comparing:
+    -   Logfire C++ engine
+    -   Python regex
+    -   grep
+    -   ripgrep
 
-~15-30x faster than equivalent Python grep.
+## Performance Snapshot
+
+Recent optimized benchmarks on:
+
+-   Ryzen 5 5600H
+-   WSL2 Ubuntu
+-   GCC 15 (`-O3`, `-march=native`)
+-   Warm cache
+-   \~44 MB log file (\~1M lines)
+
+Observed:
+
+-   Median query latency: \~93 ms
+-   Throughput: \~476 MB/s
+-   \~32% lower latency after profiling + serializer optimizations
+
+Optimization journey:
+
+136 ms → 113 ms → 98 ms → 93 ms
 
 ## Architecture
 
-HTTP client
+``` text
+mmap
 ↓
-FastAPI (Python)          — routing, validation, schema
+apply_single_pass()
 ↓
-pybind11 bridge           — GIL release, zero-copy handoff
+QueryFilter::matches()
 ↓
-C++ core engine
-├── mmap_reader       — zero-copy memory-mapped file I/O
-├── line_scanner      — SIMD-accelerated newline search (memchr/SSE2)
-├── query_filter      — RE2 regex + field filtering, linear time guaranteed
-└── serializer        — JSON output
-
-## Stack
-
-- **C++20** — core engine
-- **RE2** — safe linear-time regex (no catastrophic backtracking)
-- **pybind11** — Python/C++ bridge with GIL management  
-- **FastAPI** — async HTTP API
-- **Google Test** — C++ unit tests (13/13 passing)
-- **mmap + MADV_SEQUENTIAL** — zero-copy file reading
-
-## API
-
-### `POST /query/`
-
-```json
-{
-  "path": "/var/log/app.log",
-  "pattern": "ERROR|WARN",
-  "field_filter": "timeout",
-  "limit": 100,
-  "offset": 0
-}
+JSON serialization
+↓
+CLI / Python API
 ```
 
-Response:
-```json
-{
-  "count": 3,
-  "lines": [
-    "2024-01-01T12:00:00 ERROR connection timeout",
-    "2024-01-01T13:00:00 WARN  read timeout"
-  ]
-}
+Core files:
+
+``` text
+cpp/core/
+├── mmap_reader.cpp
+├── line_scanner.cpp
+├── query_filter.cpp
+├── serializer.cpp
+├── py_bindings.cpp
+└── cli/main.cpp
 ```
 
-### `GET /health`
+## Build
 
-```json
-{"status": "ok"}
+Requirements:
+
+-   GCC ≥ 15
+-   CMake ≥ 4
+-   Python (optional)
+-   RE2
+-   pybind11
+
+Build:
+
+``` bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
 ```
 
-## Quick start
+Run CLI:
 
-```bash
-# 1. Install dependencies (Ubuntu/WSL2)
-sudo apt install -y build-essential cmake ninja-build libre2-dev libgtest-dev python3-fastapi python3-uvicorn python3-pybind11 pybind11-dev
-
-# 2. Build C++ core + pybind11 extension
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --parallel
-
-# 3. Run tests
-cd build && ctest --output-on-failure && cd ..
-
-# 4. Start API
-PYTHONPATH=. python3 -m uvicorn python.api.main:app --port 8080
-
-# 5. Query
-curl -X POST http://localhost:8080/query/ \
-  -H "Content-Type: application/json" \
-  -d '{"path":"/var/log/syslog","pattern":"error","limit":50}'
+``` bash
+./build/logfire_cli ~/bench.log --pattern ERROR --bench
 ```
 
-## Project structure
+## Benchmarking
+
+Use repeated runs and medians:
+
+``` bash
+for i in {1..10}; do
+taskset -c 3 ./build/logfire_cli ~/bench.log \
+--pattern ERROR --bench
+done
+```
+
+Profile:
+
+``` bash
+perf record -g taskset -c 3 ./build/logfire_cli ~/bench.log \
+--pattern ERROR --bench
+
+perf report
+```
+
+## Lessons from Optimization
+
+Several attempted optimizations were rejected after benchmarking because
+they made performance worse. Improvements are accepted only when median
+measurements improve.
+
+Workflow:
+
+baseline → modify → benchmark → compare → keep/revert
+
+## Roadmap
+
+-   Advanced queries
+-   Aggregations
+-   Parallel scan experiments
+-   Time filters
+-   Structured log extraction
+
+## License
+
+GNU

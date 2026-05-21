@@ -37,9 +37,9 @@ pipeline = {
 
 timeline = [
     ("baseline",136),
-    ("serializer",113),
-    ("escape opt",98),
-    ("current",93)
+    ("serializer",72),
+    ("escape opt",55),
+    ("current",42)
 ]
 
 improvement = round(((136-93)/136)*100)
